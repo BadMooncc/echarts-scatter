@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div style="width:800px;height: 500px" id="echart">
+
+  </div>
+  <script src="node_modules/echarts/dist/echarts.min.js"></script>
+  <script>
+    var myChart = echarts.init(document.querySelector('#echart'));
+    var currentData;
+    var option = {
+      xAxis: {
+        data: ['big', 'cat', 'fox', 'dog']
+      },
+      yAxis: {},
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          snap: true,
+          axis: 'x', // y轴选项
+          label: {
+            // show: false,
+            color: '#fff',
+            backgroundColor: 'rgba(0, 0, 0, .55)'
+          }
+        },
+        formatter: (params) => {
+          console.log(params, 'dsad');
+          if (!currentData) return;
+          var htmlF = '';
+          params.forEach(item => {
+            if (currentData[0] === item.data[0] && currentData[1] === item.data[1]) {
+              htmlF += `<div>
+                            <h3>${item.data[0] }</h3>
+                            <p>${item.data[1] }</p>
+                          </div>`;
+            }
+
+          });
+          return htmlF;
+        }
+      },
+      series: [{
+        symbolSize: 20,
+        data: [
+          ['big', 4.82],
+          ['cat', 1.82],
+          ['cat', 2.82],
+          ['dog', 1.82],
+          ['fox', 5.68],
+          ['fox', 5.68]
+        ],
+        type: 'scatter'
+      }]
+    }
+    myChart.on('mouseover',function(params){
+      currentData = params.data;
+    })
+    myChart.setOption(option);
+  </script>
+</body>
+
+</html>
